@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Header from './Header';
+// import ErrorPage from './ErrorPage';
+import Footer from './Footer';
+import ProfileOne from './components/ProfileOne'
+import BestBooks from './BestBooks'
+import Login from './Login'
+import { withAuth0 } from '@auth0/auth0-react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  render() {
+  
+    const { IsAuthenticat } = this.props.auth0;
+    return (
+      <>
+        <Router>
+          <Header />
+          <Switch>
+            <Route exact path="/">
+
+
+              {IsAuthenticat ? <BestBooks /> : <Login />}
+
+            </Route>
+            <Route exact path="/ProfileOne ">
+
+              {IsAuthenticat ? <ProfileOne /> : "not found "}
+
+            </Route>
+          </Switch>
+          <Footer />
+        </Router>
+      </>
+    );
+  }
 }
-
-export default App;
+export default withAuth0(App);
